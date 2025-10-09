@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:expressive2/theme/app_theme.dart';
+import 'package:expressive2/models/client.dart';
+import 'package:expressive2/widgets/client_selection_field.dart';
+import 'package:expressive2/screens/client_search_screen.dart';
 
 class CreateOrderScreen extends StatefulWidget {
   const CreateOrderScreen({super.key});
@@ -12,6 +16,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   final _formKey = GlobalKey<FormState>();
   DateTime _orderDate = DateTime.now();
   DateTime _validityDate = DateTime.now().add(const Duration(days: 30));
+  DateTime _cardDate = DateTime.now();
+  Client? _selectedClient;
 
   // Controllers for text fields
   final _cardNumberController = TextEditingController();
@@ -56,28 +62,48 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     }
   }
 
+  Future<void> _selectCardDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _cardDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+    );
+    if (picked != null && picked != _cardDate) {
+      setState(() {
+        _cardDate = picked;
+      });
+    }
+  }
+
+  Future<void> _selectClient() async {
+    final Client? result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ClientSearchScreen()),
+    );
+
+    if (result != null) {
+      setState(() {
+        _selectedClient = result;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final dateFormat = DateFormat('dd/MM/yyyy');
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF1FAFF),
+      backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF1FAFF),
+        backgroundColor: theme.colorScheme.surface,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black87, size: 24),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          'Vale-presente',
-          style: TextStyle(
-            color: Colors.black87,
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        title: const Text('Vale-presente'),
         centerTitle: false,
       ),
       body: SingleChildScrollView(
@@ -89,7 +115,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
               padding: const EdgeInsets.all(32),
               margin: const EdgeInsets.only(bottom: 24),
               decoration: BoxDecoration(
-                color: const Color(0xFFE0E0E0),
+                color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(24),
               ),
               child: Column(
@@ -99,37 +125,29 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                     width: 64,
                     height: 64,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: theme.colorScheme.surface,
                       shape: BoxShape.circle,
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
                         'A',
                         style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.w500,
-                          color: Colors.black54,
+                          color: theme.colorScheme.onSurface.withOpacity(0.6),
                         ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const Text(
+                  Text(
                     'Americanas',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black87,
-                    ),
+                    style: theme.textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                     'Vale-presente',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black87,
-                    ),
+                    style: theme.textTheme.headlineLarge,
                   ),
                 ],
               ),
@@ -140,8 +158,18 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
               key: _formKey,
               child: Column(
                 children: [
+                  // Client selection field
+                  ClientSelectionField(
+                    selectedClient: _selectedClient,
+                    onTap: _selectClient,
+                    label: 'Cliente',
+                    hint: 'Selecione um cliente',
+                  ),
+                  const SizedBox(height: 24),
+
                   // Número do cartão field
                   _buildCustomTextField(
+                    context: context,
                     controller: _cardNumberController,
                     label: 'Número do cartão',
                     hint: 'Digite o número do cartão',
@@ -150,6 +178,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
 
                   // PIN field
                   _buildCustomTextField(
+                    context: context,
                     controller: _pinController,
                     label: 'PIN',
                     hint: 'Digite o PIN',
@@ -159,6 +188,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
 
                   // Saldo field
                   _buildCustomTextField(
+                    context: context,
                     controller: _balanceController,
                     label: 'Saldo',
                     hint: 'Digite o saldo',
@@ -166,8 +196,25 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                   ),
                   const SizedBox(height: 24),
 
+                  // Data field
+                  GestureDetector(
+                    onTap: () => _selectCardDate(context),
+                    child: AbsorbPointer(
+                      child: _buildCustomTextField(
+                        context: context,
+                        controller: TextEditingController(
+                          text: dateFormat.format(_cardDate),
+                        ),
+                        label: 'Data',
+                        hint: 'Selecione a data',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
                   // Observações field
                   _buildCustomTextField(
+                    context: context,
                     controller: _observationsController,
                     label: 'Suas observações',
                     hint: 'Digite suas observações',
@@ -179,18 +226,16 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: theme.cardTheme.color ?? Colors.white,
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: const Color(0xFFE0E0E0)),
+                      border: Border.all(color: theme.dividerColor.withOpacity(0.2)),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Depois de adicionar seu vale-presente, o saldo dele vai aparecer em recursos como o Maps, o Shopping e outros. É possível desativar isso em ',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black87,
+                          style: theme.textTheme.bodyMedium?.copyWith(
                             height: 1.5,
                           ),
                         ),
@@ -198,25 +243,103 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                           onTap: () {
                             // Navigate to card management
                           },
-                          child: const Text(
+                          child: Text(
                             'Gerenciar dados dos cartões',
                             style: TextStyle(
                               fontSize: 14,
-                              color: Color(0xFF1976D2),
+                              color: theme.colorScheme.primary,
                               decoration: TextDecoration.underline,
                               height: 1.5,
                             ),
                           ),
                         ),
-                        const Text(
+                        Text(
                           ' ou nos detalhes do cartão.',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black87,
+                          style: theme.textTheme.bodyMedium?.copyWith(
                             height: 1.5,
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Mais usados na região section
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Mais usados na região',
+                      style: theme.textTheme.titleMedium,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Card styled like "Minhas tarefas"
+                  Container(
+                    decoration: BoxDecoration(
+                      color: theme.cardTheme.color ?? Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Card header
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Opções disponíveis',
+                                style: theme.textTheme.titleLarge,
+                              ),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.swap_vert,
+                                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+                                      size: 22,
+                                    ),
+                                    onPressed: () {},
+                                    constraints: const BoxConstraints(),
+                                    padding: const EdgeInsets.all(8),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.more_vert,
+                                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+                                      size: 22,
+                                    ),
+                                    onPressed: () {},
+                                    constraints: const BoxConstraints(),
+                                    padding: const EdgeInsets.all(8),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          // Card content area (placeholder for now)
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Text(
+                              'Selecione uma opção',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: theme.colorScheme.onSurface.withOpacity(0.6),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -229,6 +352,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   }
 
   Widget _buildCustomTextField({
+    required BuildContext context,
     required TextEditingController controller,
     required String label,
     required String hint,
@@ -241,59 +365,10 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
       obscureText: obscureText,
       keyboardType: keyboardType,
       maxLines: maxLines,
-      style: const TextStyle(
-        fontSize: 15,
-        color: Colors.black87,
-        fontFamily: 'Roboto',
-      ),
-      decoration: InputDecoration(
-        labelText: label,
-        hintText: hint,
-        labelStyle: const TextStyle(
-          color: Color(0xFF757575),
-          fontSize: 15,
-          fontWeight: FontWeight.w400,
-        ),
-        hintStyle: const TextStyle(
-          color: Color(0xFF9E9E9E),
-          fontSize: 15,
-          fontWeight: FontWeight.w400,
-        ),
-        floatingLabelStyle: const TextStyle(
-          color: Color(0xFF757575),
-          fontSize: 15,
-        ),
-        filled: true,
-        fillColor: const Color(0xFFF1FAFF),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: Color(0xFF78868A), // Cinza quando não selecionado
-            width: 1.0,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: Color(0xFF6D4E05), // Marrom/dourado escuro quando focado
-            width: 1.5,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: Colors.red,
-            width: 1.0,
-          ),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: Colors.red,
-            width: 1.5,
-          ),
-        ),
+      style: Theme.of(context).textTheme.bodyLarge,
+      decoration: AppTheme.getFormInputDecoration(
+        label: label,
+        hint: hint,
       ),
     );
   }

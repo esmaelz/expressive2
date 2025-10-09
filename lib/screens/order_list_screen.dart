@@ -91,8 +91,10 @@ class _OrderListScreenState extends State<OrderListScreen>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: theme.colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
@@ -123,10 +125,13 @@ class _OrderListScreenState extends State<OrderListScreen>
                     width: 48,
                     height: 48,
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
+                      color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.4),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.person, color: Colors.grey),
+                    child: Icon(
+                      Icons.person,
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ],
               ),
@@ -136,7 +141,7 @@ class _OrderListScreenState extends State<OrderListScreen>
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Colors.grey[300]!,
+                    color: theme.dividerColor.withOpacity(0.2),
                     width: 1,
                   ),
                 ),
@@ -163,8 +168,13 @@ class _OrderListScreenState extends State<OrderListScreen>
                     },
                   ),
                   // Pedidos Tab (empty for now)
-                  const Center(
-                    child: Text('Nenhum pedido'),
+                  Center(
+                    child: Text(
+                      'Nenhum pedido',
+                      style: TextStyle(
+                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      ),
+                    ),
                   ),
                 ],
               ),

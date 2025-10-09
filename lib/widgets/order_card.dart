@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:expressive2/models/order.dart';
+import 'package:expressive2/theme/app_theme.dart';
 import 'package:intl/intl.dart';
 
 class OrderCard extends StatelessWidget {
@@ -9,13 +10,15 @@ class OrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final customColors = context.customColors;
     final currencyFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
     final dateFormat = DateFormat('dd/MM/yyyy');
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0xFFE8F4F8), // Azul claro como no modelo
+        color: theme.cardTheme.color ?? Colors.white,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
@@ -33,15 +36,15 @@ class OrderCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFFD9A3), // Orange/beige color like in the model
+                        color: customColors.cardBadge,
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
                         order.id,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
-                          color: Color(0xFF8B6E47), // Dark orange/brown text
+                          color: customColors.badgeText,
                         ),
                       ),
                     ),
@@ -52,14 +55,14 @@ class OrderCard extends StatelessWidget {
                         Icon(
                           Icons.calendar_today_outlined,
                           size: 14,
-                          color: Colors.grey[600],
+                          color: theme.colorScheme.onSurface.withOpacity(0.6),
                         ),
                         const SizedBox(width: 4),
                         Text(
                           dateFormat.format(order.date),
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey[600],
+                            color: theme.colorScheme.onSurface.withOpacity(0.6),
                           ),
                         ),
                       ],
@@ -75,10 +78,8 @@ class OrderCard extends StatelessWidget {
                       // Customer name
                       Text(
                         order.customerName,
-                        style: const TextStyle(
-                          fontSize: 15,
+                        style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: Colors.black87,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -89,7 +90,7 @@ class OrderCard extends StatelessWidget {
                         order.seller,
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.grey[600],
+                          color: theme.colorScheme.onSurface.withOpacity(0.6),
                           fontStyle: FontStyle.italic,
                         ),
                         maxLines: 1,
@@ -104,8 +105,8 @@ class OrderCard extends StatelessWidget {
                   children: [
                     Text(
                       currencyFormat.format(order.value),
-                      style: const TextStyle(
-                        color: Color(0xFF008B7D), // Teal/green color for value
+                      style: TextStyle(
+                        color: customColors.success,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -114,13 +115,13 @@ class OrderCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFFE4B5), // Light orange background
+                        color: customColors.statusBadgeBackground,
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
                         order.status,
-                        style: const TextStyle(
-                          color: Color(0xFFD4A574), // Darker orange text
+                        style: TextStyle(
+                          color: customColors.statusBadgeText,
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
                         ),
