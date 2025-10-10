@@ -5,8 +5,17 @@ import 'package:intl/intl.dart';
 
 class OrderCard extends StatelessWidget {
   final Order order;
+  final bool isFirst;
+  final bool isLast;
+  final bool showDivider;
 
-  const OrderCard({super.key, required this.order});
+  const OrderCard({
+    super.key,
+    required this.order,
+    this.isFirst = false,
+    this.isLast = false,
+    this.showDivider = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +24,37 @@ class OrderCard extends StatelessWidget {
     final currencyFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
     final dateFormat = DateFormat('dd/MM/yyyy');
 
+    // Calculate border radius based on position
+    BorderRadius borderRadius;
+    if (isFirst && isLast) {
+      // Single item - all corners rounded
+      borderRadius = BorderRadius.circular(12);
+    } else if (isFirst) {
+      // First item - only top corners rounded
+      borderRadius = const BorderRadius.only(
+        topLeft: Radius.circular(12),
+        topRight: Radius.circular(12),
+      );
+    } else if (isLast) {
+      // Last item - only bottom corners rounded
+      borderRadius = const BorderRadius.only(
+        bottomLeft: Radius.circular(12),
+        bottomRight: Radius.circular(12),
+      );
+    } else {
+      // Middle items - small rounded corners
+      borderRadius = BorderRadius.circular(4);
+    }
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      margin: EdgeInsets.only(
+        left: 12,
+        right: 12,
+        bottom: showDivider ? 3 : 0,
+      ),
       decoration: BoxDecoration(
         color: theme.cardTheme.color ?? Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: borderRadius,
       ),
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -36,7 +71,7 @@ class OrderCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                        color: customColors.cardBadge,
+                        color: Color(0xFFfcbd00),//customColors.cardBadge,
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
@@ -116,7 +151,7 @@ class OrderCard extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(
                         color: customColors.statusBadgeBackground,
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         order.status,

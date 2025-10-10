@@ -98,42 +98,44 @@ class _OrderListScreenState extends State<OrderListScreen>
       body: SafeArea(
         child: Column(
           children: [
-            // Top Bar with Menu and Profile
+            // Search Bar
             Padding(
               padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.menu),
-                    onPressed: () {},
-                    iconSize: 28,
+              child: TextField(
+                controller: _searchController,
+                style: const TextStyle(
+                  color: Color(0xFF404e54),
+                  fontSize: 16,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Pesquisar pedidos',
+                  hintStyle: const TextStyle(
+                    color: Color(0xFF5F6A7A),
+                    fontSize: 16,
                   ),
-                  const SizedBox(width: 8),
-                  // Search Bar
-                  Expanded(
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: const InputDecoration(
-                        hintText: 'Pesquisar em Pedidos',
-                        prefixIcon: Icon(Icons.search),
-                      ),
-                    ),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: Color(0xFF5F6A7A),
                   ),
-                  const SizedBox(width: 8),
-                  // Profile Icon
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.4),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.person,
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
+                  filled: true,
+                  fillColor: const Color(0xFFd6e5ec),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(28),
+                    borderSide: BorderSide.none,
                   ),
-                ],
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(28),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(28),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                ),
               ),
             ),
             // Tab Bar
@@ -164,7 +166,12 @@ class _OrderListScreenState extends State<OrderListScreen>
                     padding: const EdgeInsets.only(top: 8, bottom: 80),
                     itemCount: _orders.length,
                     itemBuilder: (context, index) {
-                      return OrderCard(order: _orders[index]);
+                      return OrderCard(
+                        order: _orders[index],
+                        isFirst: index == 0,
+                        isLast: index == _orders.length - 1,
+                        showDivider: index != _orders.length - 1,
+                      );
                     },
                   ),
                   // Pedidos Tab (empty for now)
