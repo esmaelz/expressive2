@@ -5,7 +5,7 @@ class AppTheme {
   AppTheme._();
 
   // Custom colors based on the screenshots
-  static const Color _lightSurface = Color(0xFFE0F2F1); // Light cyan background
+  static const Color _lightSurface = Color(0xFFe0f1f8); //Color(0xFFE0F2F1); // Light cyan background
   static const Color _lightPrimary = Color(0xFF795548); // Brown/amber for selected tabs and buttons
   static const Color _lightSecondary = Color(0xFFFFB74D); // Orange for FABs and badges
   static const Color _lightTertiary = Color(0xFF9C27B0); // Purple for alternative FAB
@@ -59,7 +59,7 @@ class AppTheme {
 
     // Card Theme
     cardTheme: CardThemeData(
-      color: Colors.white,
+      color: const Color(0xFFf1faff), //Colors.white,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24),
