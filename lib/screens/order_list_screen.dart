@@ -104,21 +104,21 @@ class _OrderListScreenState extends State<OrderListScreen>
               child: TextField(
                 controller: _searchController,
                 style: const TextStyle(
-                  color: Color(0xFF404e54),
+                  color: Color(0xFF233338),
                   fontSize: 16,
                 ),
                 decoration: InputDecoration(
                   hintText: 'Pesquisar pedidos',
                   hintStyle: const TextStyle(
-                    color: Color(0xFF5F6A7A),
+                    color: Color(0xFF5f6368),
                     fontSize: 16,
                   ),
                   prefixIcon: const Icon(
                     Icons.search,
-                    color: Color(0xFF5F6A7A),
+                    color: Color(0xFF5f6368),
                   ),
                   filled: true,
-                  fillColor: const Color(0xFFd6e5ec),
+                  fillColor: const Color(0xFFF1FAFF),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(28),
                     borderSide: BorderSide.none,
@@ -140,16 +140,19 @@ class _OrderListScreenState extends State<OrderListScreen>
             ),
             // Tab Bar
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: theme.dividerColor.withOpacity(0.2),
+                    color: Color(0xFFd7e8ef),
                     width: 1,
                   ),
                 ),
               ),
               child: TabBar(
                 controller: _tabController,
+                labelColor: const Color(0xFF6c4f07),
+                unselectedLabelColor: const Color(0xFF5f7075),
+                indicatorColor: const Color(0xFF815a04),
                 tabs: const [
                   Tab(text: 'Cotações'),
                   Tab(text: 'Pedidos'),
@@ -162,17 +165,19 @@ class _OrderListScreenState extends State<OrderListScreen>
                 controller: _tabController,
                 children: [
                   // Cotações Tab
-                  ListView.builder(
-                    padding: const EdgeInsets.only(top: 8, bottom: 80),
-                    itemCount: _orders.length,
-                    itemBuilder: (context, index) {
-                      return OrderCard(
-                        order: _orders[index],
-                        isFirst: index == 0,
-                        isLast: index == _orders.length - 1,
-                        showDivider: index != _orders.length - 1,
-                      );
-                    },
+                  ListView(
+                    padding: const EdgeInsets.only(top: 16, bottom: 80),
+                    children: [
+                      Column(
+                        children: List.generate(_orders.length, (index) {
+                          return OrderCard(
+                            order: _orders[index],
+                            isFirst: index == 0,
+                            isLast: index == _orders.length - 1,
+                          );
+                        }),
+                      ),
+                    ],
                   ),
                   // Pedidos Tab (empty for now)
                   Center(
@@ -199,18 +204,31 @@ class _OrderListScreenState extends State<OrderListScreen>
             ),
           );
         },
+        backgroundColor: const Color(0xFFfedea5),
         icon: const Icon(Icons.add),
         label: const Text('Nova cotação'),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       // Bottom Navigation Bar
       bottomNavigationBar: NavigationBar(
+        backgroundColor: const Color(0xFFdaebf2),
+        indicatorColor: const Color(0xFFe4dcff),
         selectedIndex: _selectedBottomNavIndex,
         onDestinationSelected: (index) {
           setState(() {
             _selectedBottomNavIndex = index;
           });
         },
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return const IconThemeData(
+              color: Color(0xFF1b1837),
+            );
+          }
+          return IconThemeData(
+            color: Colors.grey[600],
+          );
+        }),
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.receipt_long),

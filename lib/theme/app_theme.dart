@@ -126,7 +126,7 @@ class AppTheme {
 
     // Navigation Bar Theme (Bottom Navigation)
     navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFdaebf2),
       indicatorColor: _lightSecondary.withOpacity(0.2),
       labelTextStyle: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {

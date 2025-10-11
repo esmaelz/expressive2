@@ -7,14 +7,12 @@ class OrderCard extends StatelessWidget {
   final Order order;
   final bool isFirst;
   final bool isLast;
-  final bool showDivider;
 
   const OrderCard({
     super.key,
     required this.order,
     this.isFirst = false,
     this.isLast = false,
-    this.showDivider = true,
   });
 
   @override
@@ -24,36 +22,17 @@ class OrderCard extends StatelessWidget {
     final currencyFormat = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
     final dateFormat = DateFormat('dd/MM/yyyy');
 
-    // Calculate border radius based on position
-    BorderRadius borderRadius;
-    if (isFirst && isLast) {
-      // Single item - all corners rounded
-      borderRadius = BorderRadius.circular(12);
-    } else if (isFirst) {
-      // First item - only top corners rounded
-      borderRadius = const BorderRadius.only(
-        topLeft: Radius.circular(12),
-        topRight: Radius.circular(12),
-      );
-    } else if (isLast) {
-      // Last item - only bottom corners rounded
-      borderRadius = const BorderRadius.only(
-        bottomLeft: Radius.circular(12),
-        bottomRight: Radius.circular(12),
-      );
-    } else {
-      // Middle items - small rounded corners
-      borderRadius = BorderRadius.circular(4);
-    }
+    // Apply rounded corners to first and last cards
+    final borderRadius = BorderRadius.only(
+      topLeft: Radius.circular(isFirst ? 20 : 0),
+      topRight: Radius.circular(isFirst ? 20 : 0),
+      bottomLeft: Radius.circular(isLast ? 20 : 0),
+      bottomRight: Radius.circular(isLast ? 20 : 0),
+    );
 
     return Container(
-      margin: EdgeInsets.only(
-        left: 12,
-        right: 12,
-        bottom: showDivider ? 3 : 0,
-      ),
       decoration: BoxDecoration(
-        color: theme.cardTheme.color ?? Colors.white,
+        color: const Color(0xFFf1faff), // Cor do card
         borderRadius: borderRadius,
       ),
       child: Padding(
@@ -110,65 +89,67 @@ class OrderCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Customer name
-                      Text(
-                        order.customerName,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 6),
-                      // Seller info
-                      Text(
-                        order.seller,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: theme.colorScheme.onSurface.withOpacity(0.6),
-                          fontStyle: FontStyle.italic,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-                // Value and status on the right
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      currencyFormat.format(order.value),
-                      style: TextStyle(
-                        color: customColors.success,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                          // Customer name
+                          Text(
+                            order.customerName,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF2C2C2C),
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 6),
+                          // Seller info
+                          Text(
+                            order.seller,
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: theme.colorScheme.onSurface.withOpacity(0.6),
+                              fontStyle: FontStyle.italic,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: customColors.statusBadgeBackground,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        order.status,
-                        style: TextStyle(
-                          color: customColors.statusBadgeText,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w500,
+                    // Value and status on the right
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          currencyFormat.format(order.value),
+                          style: TextStyle(
+                            color: customColors.success,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
+                        const SizedBox(height: 4),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: customColors.statusBadgeBackground,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            order.status,
+                            style: TextStyle(
+                              color: customColors.statusBadgeText,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ],
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+      );
   }
 }
