@@ -63,11 +63,36 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   }
 
   Future<void> _selectCardDate(BuildContext context) async {
+    final theme = Theme.of(context);
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: _cardDate,
       firstDate: DateTime(2020),
       lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: const Color(0xFFD4AF37), // Cor dourada para seleção
+              onPrimary: Colors.white, // Texto sobre a cor dourada
+              surface: theme.colorScheme.surface, // Background do calendário
+              onSurface: theme.colorScheme.onSurface, // Texto do calendário
+              background: theme.colorScheme.surface,
+            ),
+            dialogBackgroundColor: theme.colorScheme.surface,
+            datePickerTheme: DatePickerThemeData(
+              backgroundColor: theme.colorScheme.surface,
+              headerBackgroundColor: theme.colorScheme.surface,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: const Color(0xFFD4AF37), // Botões dourados
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null && picked != _cardDate) {
       setState(() {
