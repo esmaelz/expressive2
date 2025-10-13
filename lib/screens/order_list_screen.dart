@@ -210,26 +210,45 @@ class _OrderListScreenState extends State<OrderListScreen>
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       // Bottom Navigation Bar
-      bottomNavigationBar: NavigationBar(
-        backgroundColor: const Color(0xFFdaebf2),
-        indicatorColor: const Color(0xFFe4dcff),
-        selectedIndex: _selectedBottomNavIndex,
-        onDestinationSelected: (index) {
-          setState(() {
-            _selectedBottomNavIndex = index;
-          });
-        },
-        iconTheme: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected)) {
-            return const IconThemeData(
-              color: Color(0xFF1b1837),
-            );
-          }
-          return IconThemeData(
-            color: Colors.grey[600],
-          );
-        }),
-        destinations: const [
+      bottomNavigationBar: Theme(
+        data: theme.copyWith(
+          navigationBarTheme: NavigationBarThemeData(
+            backgroundColor: const Color(0xFFdaebf2),
+            indicatorColor: const Color(0xFFe4dcff),
+            iconTheme: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) {
+                return const IconThemeData(
+                  color: Color(0xFF1b1837),
+                );
+              }
+              return IconThemeData(
+                color: Colors.grey[600],
+              );
+            }),
+            labelTextStyle: WidgetStateProperty.resolveWith((states) {
+              if (states.contains(WidgetState.selected)) {
+                return const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF1b1837),
+                );
+              }
+              return TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[600],
+              );
+            }),
+          ),
+        ),
+        child: NavigationBar(
+          selectedIndex: _selectedBottomNavIndex,
+          onDestinationSelected: (index) {
+            setState(() {
+              _selectedBottomNavIndex = index;
+            });
+          },
+          destinations: const [
           NavigationDestination(
             icon: Icon(Icons.receipt_long),
             selectedIcon: Icon(Icons.receipt_long),
@@ -241,6 +260,7 @@ class _OrderListScreenState extends State<OrderListScreen>
             label: 'Produtos',
           ),
         ],
+        ),
       ),
     );
   }
