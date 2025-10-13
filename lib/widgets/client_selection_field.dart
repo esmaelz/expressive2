@@ -21,78 +21,32 @@ class ClientSelectionField extends StatefulWidget {
 }
 
 class _ClientSelectionFieldState extends State<ClientSelectionField> {
-  bool _isFocused = false;
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final customColors = context.customColors;
 
-    return GestureDetector(
-      onTap: () {
-        setState(() => _isFocused = true);
-        widget.onTap();
-        // Reset focus state after navigation
-        Future.delayed(const Duration(milliseconds: 300), () {
-          if (mounted) setState(() => _isFocused = false);
-        });
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: widget.selectedClient == null
-              ? AppTheme.customColors.searchBarBackground
-              : theme.colorScheme.surface,
-          borderRadius: BorderRadius.circular(8),
-          border: widget.selectedClient == null
-              ? Border.all(
-                  color: _isFocused
-                    ? customColors.inputBorderFocused
-                    : customColors.inputBorder,
-                  width: _isFocused ? 1.5 : 1.0,
-                )
-              : null,
-        ),
-        child: widget.selectedClient == null
-            ? _buildEmptyState(theme)
-            : _buildSelectedState(theme),
-      ),
-    );
+    return widget.selectedClient == null
+        ? _buildEmptyState(theme)
+        : _buildSelectedState(theme);
   }
 
   Widget _buildEmptyState(ThemeData theme) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            widget.label,
-            style: const TextStyle(
-              color: Color(0xFF757575),
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: AbsorbPointer(
+        child: TextFormField(
+          style: theme.textTheme.bodyLarge,
+          decoration: AppTheme.getFormInputDecoration(
+            label: widget.label,
+            hint: widget.hint,
+          ).copyWith(
+            suffixIcon: Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
+              color: theme.colorScheme.onSurface.withOpacity(0.4),
             ),
           ),
-          const SizedBox(height: 4),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                widget.hint,
-                style: const TextStyle(
-                  color: Color(0xFF9E9E9E),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              Icon(
-                Icons.arrow_forward_ios,
-                size: 16,
-                color: theme.colorScheme.onSurface.withOpacity(0.4),
-              ),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -100,108 +54,112 @@ class _ClientSelectionFieldState extends State<ClientSelectionField> {
   Widget _buildSelectedState(ThemeData theme) {
     final client = widget.selectedClient!;
 
-    return Padding(
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        children: [
-          // Avatar
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: theme.colorScheme.primary.withOpacity(0.1),
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: theme.colorScheme.primary.withOpacity(0.3),
-                width: 1,
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: Container(
+        color: theme.colorScheme.surface,
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: [
+            // Avatar
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary.withOpacity(0.1),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: theme.colorScheme.primary.withOpacity(0.3),
+                  width: 1,
+                ),
+              ),
+              child: Center(
+                child: client.avatarUrl != null
+                    ? ClipOval(
+                        child: Image.network(
+                          client.avatarUrl!,
+                          width: 46,
+                          height: 46,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => _buildInitialsAvatar(client, theme),
+                        ),
+                      )
+                    : _buildInitialsAvatar(client, theme),
               ),
             ),
-            child: Center(
-              child: client.avatarUrl != null
-                  ? ClipOval(
-                      child: Image.network(
-                        client.avatarUrl!,
-                        width: 46,
-                        height: 46,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => _buildInitialsAvatar(client, theme),
-                      ),
-                    )
-                  : _buildInitialsAvatar(client, theme),
-            ),
-          ),
-          const SizedBox(width: 12),
+            const SizedBox(width: 12),
 
-          // Client info
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Label above the info
-                Text(
-                  widget.label,
-                  style: TextStyle(
-                    color: const Color(0xFF757575),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                // Client name
-                Text(
-                  client.name,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 2),
-                // CNPJ
-                Text(
-                  client.formattedCnpj,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: theme.colorScheme.onSurface.withOpacity(0.7),
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                // Location with icon
-                Row(
-                  children: [
-                    Icon(
-                      Icons.location_on,
-                      size: 14,
-                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+            // Client info
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Label above the info
+                  Text(
+                    widget.label,
+                    style: TextStyle(
+                      color: const Color(0xFF757575),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
                     ),
-                    const SizedBox(width: 4),
-                    Flexible(
-                      child: Text(
-                        client.location,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: theme.colorScheme.onSurface.withOpacity(0.7),
+                  ),
+                  const SizedBox(height: 2),
+                  // Client name
+                  Text(
+                    client.name,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 2),
+                  // CNPJ
+                  Text(
+                    client.formattedCnpj,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: theme.colorScheme.onSurface.withOpacity(0.7),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  // Location with icon
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.location_on,
+                        size: 14,
+                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      ),
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: Text(
+                          client.location,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: theme.colorScheme.onSurface.withOpacity(0.7),
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
 
-          // Arrow icon
-          Icon(
-            Icons.arrow_forward_ios,
-            size: 16,
-            color: theme.colorScheme.onSurface.withOpacity(0.4),
-          ),
-        ],
+            // Arrow icon
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
+              color: theme.colorScheme.onSurface.withOpacity(0.4),
+            ),
+          ],
+        ),
       ),
     );
   }
