@@ -53,9 +53,9 @@ class _ClientSearchScreenState extends State<ClientSearchScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      backgroundColor: theme.cardTheme.color ?? Colors.white,
       appBar: AppBar(
-        backgroundColor: theme.colorScheme.surface,
+        backgroundColor: theme.cardTheme.color ?? Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -73,6 +73,9 @@ class _ClientSearchScreenState extends State<ClientSearchScreen> {
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Pesquisar por nome, CNPJ ou cidade...',
+                hintStyle: const TextStyle(
+                  color: Color(0xFF738387),
+                ),
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
@@ -83,7 +86,7 @@ class _ClientSearchScreenState extends State<ClientSearchScreen> {
                       )
                     : null,
                 filled: true,
-                fillColor: theme.colorScheme.surfaceContainerHighest,
+                fillColor: const Color(0xFFDAEBF2),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(28),
                   borderSide: BorderSide.none,
@@ -161,21 +164,15 @@ class _ClientSearchScreenState extends State<ClientSearchScreen> {
 
   Widget _buildClientTile(Client client, ThemeData theme) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(
-        color: theme.cardTheme.color ?? Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
+      color: theme.cardTheme.color ?? Colors.white,
       child: Material(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(12),
         child: InkWell(
-          borderRadius: BorderRadius.circular(12),
           onTap: () {
             Navigator.pop(context, client);
           },
           child: Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Row(
               children: [
                 // Avatar
