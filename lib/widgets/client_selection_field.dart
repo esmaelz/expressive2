@@ -39,14 +39,18 @@ class _ClientSelectionFieldState extends State<ClientSelectionField> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: AppTheme.customColors.searchBarBackground,
+          color: widget.selectedClient == null
+              ? AppTheme.customColors.searchBarBackground
+              : theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: _isFocused
-              ? customColors.inputBorderFocused
-              : customColors.inputBorder,
-            width: _isFocused ? 1.5 : 1.0,
-          ),
+          border: widget.selectedClient == null
+              ? Border.all(
+                  color: _isFocused
+                    ? customColors.inputBorderFocused
+                    : customColors.inputBorder,
+                  width: _isFocused ? 1.5 : 1.0,
+                )
+              : null,
         ),
         child: widget.selectedClient == null
             ? _buildEmptyState(theme)
@@ -154,28 +158,26 @@ class _ClientSelectionFieldState extends State<ClientSelectionField> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 2),
-                // CNPJ and location
+                // CNPJ
+                Text(
+                  client.formattedCnpj,
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: theme.colorScheme.onSurface.withOpacity(0.7),
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                // Location with icon
                 Row(
                   children: [
-                    Flexible(
-                      child: Text(
-                        client.formattedCnpj,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: theme.colorScheme.onSurface.withOpacity(0.7),
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                    Icon(
+                      Icons.location_on,
+                      size: 14,
+                      color: theme.colorScheme.onSurface.withOpacity(0.6),
                     ),
-                    const SizedBox(width: 8),
-                    Text(
-                      '•',
-                      style: TextStyle(
-                        color: theme.colorScheme.onSurface.withOpacity(0.5),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 4),
                     Flexible(
                       child: Text(
                         client.location,
