@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:expressive2/models/order.dart';
 import 'package:expressive2/widgets/order_card.dart';
 import 'package:expressive2/screens/create_order_screen.dart';
+import 'package:expressive2/theme/app_theme.dart';
 
 class OrderListScreen extends StatefulWidget {
   const OrderListScreen({super.key});
@@ -92,6 +93,7 @@ class _OrderListScreenState extends State<OrderListScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final customColors = context.customColors;
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -103,22 +105,22 @@ class _OrderListScreenState extends State<OrderListScreen>
               padding: const EdgeInsets.all(16),
               child: TextField(
                 controller: _searchController,
-                style: const TextStyle(
-                  color: Color(0xFF233338),
+                style: TextStyle(
+                  color: customColors.textSecondary,
                   fontSize: 16,
                 ),
                 decoration: InputDecoration(
                   hintText: 'Pesquisar pedidos',
-                  hintStyle: const TextStyle(
-                    color: Color(0xFF5f6368),
+                  hintStyle: TextStyle(
+                    color: customColors.textTertiary,
                     fontSize: 16,
                   ),
-                  prefixIcon: const Icon(
+                  prefixIcon: Icon(
                     Icons.search,
-                    color: Color(0xFF5f6368),
+                    color: customColors.textTertiary,
                   ),
                   filled: true,
-                  fillColor: const Color(0xFFF1FAFF),
+                  fillColor: customColors.searchBarFill,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(28),
                     borderSide: BorderSide.none,
@@ -140,19 +142,19 @@ class _OrderListScreenState extends State<OrderListScreen>
             ),
             // Tab Bar
             Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
-                    color: Color(0xFFd7e8ef),
+                    color: customColors.divider,
                     width: 1,
                   ),
                 ),
               ),
               child: TabBar(
                 controller: _tabController,
-                labelColor: const Color(0xFF6c4f07),
-                unselectedLabelColor: const Color(0xFF5f7075),
-                indicatorColor: const Color(0xFF815a04),
+                labelColor: customColors.tabSelected,
+                unselectedLabelColor: customColors.tabUnselected,
+                indicatorColor: customColors.tabIndicator,
                 tabs: const [
                   Tab(text: 'Cotações'),
                   Tab(text: 'Pedidos'),
@@ -204,7 +206,7 @@ class _OrderListScreenState extends State<OrderListScreen>
             ),
           );
         },
-        backgroundColor: const Color(0xFFfedea5),
+        backgroundColor: customColors.fabBackground,
         icon: const Icon(Icons.add),
         label: const Text('Nova cotação'),
       ),
@@ -213,30 +215,30 @@ class _OrderListScreenState extends State<OrderListScreen>
       bottomNavigationBar: Theme(
         data: theme.copyWith(
           navigationBarTheme: NavigationBarThemeData(
-            backgroundColor: const Color(0xFFdaebf2),
-            indicatorColor: const Color(0xFFe4dcff),
+            backgroundColor: customColors.navBarBackground,
+            indicatorColor: customColors.navBarIndicator,
             iconTheme: WidgetStateProperty.resolveWith((states) {
               if (states.contains(WidgetState.selected)) {
-                return const IconThemeData(
-                  color: Color(0xFF1b1837),
+                return IconThemeData(
+                  color: customColors.navBarSelected,
                 );
               }
               return IconThemeData(
-                color: Colors.grey[600],
+                color: customColors.grey600,
               );
             }),
             labelTextStyle: WidgetStateProperty.resolveWith((states) {
               if (states.contains(WidgetState.selected)) {
-                return const TextStyle(
+                return TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF1b1837),
+                  color: customColors.navBarSelected,
                 );
               }
               return TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
-                color: Colors.grey[600],
+                color: customColors.grey600,
               );
             }),
           ),

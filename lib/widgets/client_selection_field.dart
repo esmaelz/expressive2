@@ -24,13 +24,14 @@ class _ClientSelectionFieldState extends State<ClientSelectionField> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final customColors = context.customColors;
 
     return widget.selectedClient == null
-        ? _buildEmptyState(theme)
-        : _buildSelectedState(theme);
+        ? _buildEmptyState(theme, customColors)
+        : _buildSelectedState(theme, customColors);
   }
 
-  Widget _buildEmptyState(ThemeData theme) {
+  Widget _buildEmptyState(ThemeData theme, CustomColors customColors) {
     return GestureDetector(
       onTap: widget.onTap,
       child: AbsorbPointer(
@@ -51,7 +52,7 @@ class _ClientSelectionFieldState extends State<ClientSelectionField> {
     );
   }
 
-  Widget _buildSelectedState(ThemeData theme) {
+  Widget _buildSelectedState(ThemeData theme, CustomColors customColors) {
     final client = widget.selectedClient!;
 
     return GestureDetector(
@@ -98,7 +99,7 @@ class _ClientSelectionFieldState extends State<ClientSelectionField> {
                   Text(
                     widget.label,
                     style: TextStyle(
-                      color: const Color(0xFF757575),
+                      color: customColors.textLabel,
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                     ),

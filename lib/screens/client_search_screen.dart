@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:expressive2/models/client.dart';
+import 'package:expressive2/theme/app_theme.dart';
 
 class ClientSearchScreen extends StatefulWidget {
   const ClientSearchScreen({super.key});
@@ -51,11 +52,12 @@ class _ClientSearchScreenState extends State<ClientSearchScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final customColors = context.customColors;
 
     return Scaffold(
-      backgroundColor: theme.cardTheme.color ?? Colors.white,
+      backgroundColor: theme.cardTheme.color ?? customColors.white,
       appBar: AppBar(
-        backgroundColor: theme.cardTheme.color ?? Colors.white,
+        backgroundColor: theme.cardTheme.color ?? customColors.white,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -73,8 +75,8 @@ class _ClientSearchScreenState extends State<ClientSearchScreen> {
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Pesquisar por nome, CNPJ ou cidade...',
-                hintStyle: const TextStyle(
-                  color: Color(0xFF738387),
+                hintStyle: TextStyle(
+                  color: customColors.searchHint,
                 ),
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: _searchController.text.isNotEmpty
@@ -86,7 +88,7 @@ class _ClientSearchScreenState extends State<ClientSearchScreen> {
                       )
                     : null,
                 filled: true,
-                fillColor: const Color(0xFFDAEBF2),
+                fillColor: customColors.searchFill,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(28),
                   borderSide: BorderSide.none,
@@ -163,10 +165,11 @@ class _ClientSearchScreenState extends State<ClientSearchScreen> {
   }
 
   Widget _buildClientTile(Client client, ThemeData theme) {
+    final customColors = context.customColors;
     return Container(
-      color: theme.cardTheme.color ?? Colors.white,
+      color: theme.cardTheme.color ?? customColors.white,
       child: Material(
-        color: Colors.transparent,
+        color: customColors.transparent,
         child: InkWell(
           onTap: () {
             Navigator.pop(context, client);

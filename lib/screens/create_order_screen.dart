@@ -63,7 +63,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   }
 
   Future<void> _selectCardDate(BuildContext context) async {
-    final theme = Theme.of(context);
+    final customColors = context.customColors;
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: _cardDate,
@@ -73,35 +73,35 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
         return Theme(
           data: ThemeData.light().copyWith(
             colorScheme: ColorScheme.light(
-              primary: const Color(0xFF7b5500), // Cor da data selecionada
-              onPrimary: Colors.white, // Texto sobre a cor da data selecionada
-              surface: const Color(0xFFE8F4F8), // Background do calendário (azul claro)
-              onSurface: const Color(0xFF314045), // Cor da fonte
-              background: const Color(0xFFE8F4F8),
+              primary: customColors.datePickerPrimary,
+              onPrimary: customColors.white,
+              surface: customColors.datePickerSurface,
+              onSurface: customColors.datePickerText,
+              background: customColors.datePickerSurface,
             ),
-            dialogBackgroundColor: const Color(0xFFE8F4F8),
-            dividerColor: Colors.transparent, // Remove o divisor
+            dialogBackgroundColor: customColors.datePickerSurface,
+            dividerColor: customColors.transparent,
             datePickerTheme: DatePickerThemeData(
-              backgroundColor: const Color(0xFFE8F4F8),
-              headerBackgroundColor: const Color(0xFFE8F4F8),
-              headerForegroundColor: const Color(0xFF314045),
-              dividerColor: Colors.transparent, // Remove o divisor
+              backgroundColor: customColors.datePickerSurface,
+              headerBackgroundColor: customColors.datePickerSurface,
+              headerForegroundColor: customColors.datePickerText,
+              dividerColor: customColors.transparent,
               dayForegroundColor: WidgetStateProperty.resolveWith((states) {
                 if (states.contains(WidgetState.selected)) {
-                  return Colors.white;
+                  return customColors.white;
                 }
-                return const Color(0xFF314045);
+                return customColors.datePickerText;
               }),
               yearForegroundColor: WidgetStateProperty.resolveWith((states) {
                 if (states.contains(WidgetState.selected)) {
-                  return Colors.white;
+                  return customColors.white;
                 }
-                return const Color(0xFF314045);
+                return customColors.datePickerText;
               }),
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: const Color(0xFF967d3e), // Cor dos botões "Cancelar" e "OK"
+                foregroundColor: customColors.datePickerButton,
               ),
             ),
           ),
@@ -266,7 +266,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: theme.cardTheme.color ?? Colors.white,
+                      color: theme.cardTheme.color ?? context.customColors.white,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: theme.dividerColor.withOpacity(0.2)),
                     ),
@@ -317,11 +317,11 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                   // Card styled like "Minhas tarefas"
                   Container(
                     decoration: BoxDecoration(
-                      color: theme.cardTheme.color ?? Colors.white,
+                      color: theme.cardTheme.color ?? context.customColors.white,
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: context.customColors.blackShadow.withOpacity(0.05),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),

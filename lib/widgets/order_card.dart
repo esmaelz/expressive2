@@ -32,7 +32,7 @@ class OrderCard extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFf1faff), // Cor do card
+        color: customColors.cardBackground,
         borderRadius: borderRadius,
       ),
       child: Padding(
@@ -50,7 +50,7 @@ class OrderCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                        color: Color(0xFFfcbd00),//customColors.cardBadge,
+                        color: customColors.orderBadge,
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
@@ -92,10 +92,10 @@ class OrderCard extends StatelessWidget {
                           // Customer name
                           Text(
                             order.customerName,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xFF2C2C2C),
+                              color: customColors.textPrimary,
                             ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
