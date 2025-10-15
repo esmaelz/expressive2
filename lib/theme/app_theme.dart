@@ -201,31 +201,31 @@ class AppTheme {
 
     // Navigation Bar Theme (Bottom Navigation)
     navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: const Color(0xFFdaebf2),
-      indicatorColor: _lightSecondary.withOpacity(0.2),
+      backgroundColor: _lightNavBarBackground,
+      indicatorColor: _lightNavBarIndicator,
       labelTextStyle: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
           return const TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            color: _lightPrimary,
+            color: _lightNavBarSelected,
           );
         }
-        return TextStyle(
+        return const TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w500,
-          color: Colors.grey[600],
+          color: _lightGrey600,
         );
       }),
       iconTheme: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
           return const IconThemeData(
-            color: _lightPrimary,
+            color: _lightNavBarSelected,
             size: 24,
           );
         }
-        return IconThemeData(
-          color: Colors.grey[600],
+        return const IconThemeData(
+          color: _lightGrey600,
           size: 24,
         );
       }),
@@ -379,30 +379,30 @@ class AppTheme {
     // Navigation Bar Theme (Bottom Navigation)
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: _darkNavBarBackground,
-      indicatorColor: _darkSecondary.withOpacity(0.2),
+      indicatorColor: _darkNavBarIndicator,
       labelTextStyle: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
           return const TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            color: _darkPrimary,
+            color: _darkNavBarSelected,
           );
         }
         return const TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w500,
-          color: Color(0xFF909090),
+          color: _darkTabUnselected,
         );
       }),
       iconTheme: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
           return const IconThemeData(
-            color: _darkPrimary,
+            color: _darkNavBarSelected,
             size: 24,
           );
         }
         return const IconThemeData(
-          color: Color(0xFF909090),
+          color: _darkTabUnselected,
           size: 24,
         );
       }),

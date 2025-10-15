@@ -212,45 +212,14 @@ class _OrderListScreenState extends State<OrderListScreen>
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       // Bottom Navigation Bar
-      bottomNavigationBar: Theme(
-        data: theme.copyWith(
-          navigationBarTheme: NavigationBarThemeData(
-            backgroundColor: customColors.navBarBackground,
-            indicatorColor: customColors.navBarIndicator,
-            iconTheme: WidgetStateProperty.resolveWith((states) {
-              if (states.contains(WidgetState.selected)) {
-                return IconThemeData(
-                  color: customColors.navBarSelected,
-                );
-              }
-              return IconThemeData(
-                color: customColors.grey600,
-              );
-            }),
-            labelTextStyle: WidgetStateProperty.resolveWith((states) {
-              if (states.contains(WidgetState.selected)) {
-                return TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: customColors.navBarSelected,
-                );
-              }
-              return TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: customColors.grey600,
-              );
-            }),
-          ),
-        ),
-        child: NavigationBar(
-          selectedIndex: _selectedBottomNavIndex,
-          onDestinationSelected: (index) {
-            setState(() {
-              _selectedBottomNavIndex = index;
-            });
-          },
-          destinations: const [
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedBottomNavIndex,
+        onDestinationSelected: (index) {
+          setState(() {
+            _selectedBottomNavIndex = index;
+          });
+        },
+        destinations: const [
           NavigationDestination(
             icon: Icon(Icons.receipt_long),
             selectedIcon: Icon(Icons.receipt_long),
@@ -262,7 +231,6 @@ class _OrderListScreenState extends State<OrderListScreen>
             label: 'Produtos',
           ),
         ],
-        ),
       ),
     );
   }
