@@ -73,20 +73,35 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
         return Theme(
           data: ThemeData.light().copyWith(
             colorScheme: ColorScheme.light(
-              primary: const Color(0xFFD4AF37), // Cor dourada para seleção
-              onPrimary: Colors.white, // Texto sobre a cor dourada
-              surface: theme.colorScheme.surface, // Background do calendário
-              onSurface: theme.colorScheme.onSurface, // Texto do calendário
-              background: theme.colorScheme.surface,
+              primary: const Color(0xFF7b5500), // Cor da data selecionada
+              onPrimary: Colors.white, // Texto sobre a cor da data selecionada
+              surface: const Color(0xFFE8F4F8), // Background do calendário (azul claro)
+              onSurface: const Color(0xFF314045), // Cor da fonte
+              background: const Color(0xFFE8F4F8),
             ),
-            dialogBackgroundColor: theme.colorScheme.surface,
+            dialogBackgroundColor: const Color(0xFFE8F4F8),
+            dividerColor: Colors.transparent, // Remove o divisor
             datePickerTheme: DatePickerThemeData(
-              backgroundColor: theme.colorScheme.surface,
-              headerBackgroundColor: theme.colorScheme.surface,
+              backgroundColor: const Color(0xFFE8F4F8),
+              headerBackgroundColor: const Color(0xFFE8F4F8),
+              headerForegroundColor: const Color(0xFF314045),
+              dividerColor: Colors.transparent, // Remove o divisor
+              dayForegroundColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return Colors.white;
+                }
+                return const Color(0xFF314045);
+              }),
+              yearForegroundColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return Colors.white;
+                }
+                return const Color(0xFF314045);
+              }),
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: const Color(0xFFD4AF37), // Botões dourados
+                foregroundColor: const Color(0xFF967d3e), // Cor dos botões "Cancelar" e "OK"
               ),
             ),
           ),
