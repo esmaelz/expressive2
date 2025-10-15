@@ -16,6 +16,8 @@ class MyApp extends StatelessWidget {
       title: 'Pedidos',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
       home: const OrderListScreen(),
     );
   }

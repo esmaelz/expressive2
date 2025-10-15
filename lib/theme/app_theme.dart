@@ -48,6 +48,50 @@ class AppTheme {
   static const Color _lightWhite = Colors.white; // White
   static const Color _lightBlackShadow = Colors.black; // Black for shadows
 
+  // Dark theme colors
+  static const Color _darkSurface = Color(0xFF121212); // Dark surface background
+  static const Color _darkPrimary = Color(0xFFD4A574); // Light brown/amber for dark theme
+  static const Color _darkSecondary = Color(0xFFFFB74D); // Orange for FABs and badges
+  static const Color _darkTertiary = Color(0xFFCE93D8); // Light purple for dark theme
+  static const Color _darkSuccess = Color(0xFF81C784); // Light green for values and positive states
+  static const Color _darkError = Color(0xFFEF5350); // Light red for errors
+  static const Color _darkSearchBar = Color(0xFF2C2C2C); // Dark beige/brown for search bar
+  static const Color _darkCardBadge = Color(0xFFFFB74D); // Orange for badges
+  static const Color _darkBadgeText = Color(0xFF1A1A1A); // Very dark for badge text
+  static const Color _darkInputBorder = Color(0xFF616161); // Gray for input borders
+  static const Color _darkInputBorderFocused = Color(0xFFD4A574); // Light brown for focused inputs
+
+  // Additional dark theme colors
+  static const Color _darkCardBackground = Color(0xFF1E1E1E); // Card background color
+  static const Color _darkOrderBadge = Color(0xFFFFB74D); // Order ID badge orange/gold
+  static const Color _darkTextPrimary = Color(0xFFE0E0E0); // Primary text color (light)
+  static const Color _darkTextSecondary = Color(0xFFB0B0B0); // Secondary text color
+  static const Color _darkTextTertiary = Color(0xFF909090); // Tertiary text color (gray)
+  static const Color _darkTextLabel = Color(0xFFB0B0B0); // Label text color
+  static const Color _darkTextHint = Color(0xFF707070); // Hint text color
+  static const Color _darkSearchBarFill = Color(0xFF2C2C2C); // Search bar fill color
+  static const Color _darkSearchHint = Color(0xFF808080); // Search hint text color
+  static const Color _darkSearchFill = Color(0xFF2C2C2C); // Alternative search fill color
+  static const Color _darkDivider = Color(0xFF424242); // Divider color
+  static const Color _darkTabSelected = Color(0xFFFFB74D); // Selected tab label color
+  static const Color _darkTabUnselected = Color(0xFF909090); // Unselected tab label color
+  static const Color _darkTabIndicator = Color(0xFFFFB74D); // Tab indicator color
+  static const Color _darkFabBackground = Color(0xFFFFB74D); // FAB background color
+  static const Color _darkNavBarBackground = Color(0xFF1E1E1E); // Bottom nav bar background
+  static const Color _darkNavBarIndicator = Color(0xFF424242); // Bottom nav bar indicator
+  static const Color _darkNavBarSelected = Color(0xFFFFB74D); // Bottom nav bar selected item
+  static const Color _darkDatePickerPrimary = Color(0xFFD4A574); // Date picker primary color
+  static const Color _darkDatePickerSurface = Color(0xFF2C2C2C); // Date picker surface color
+  static const Color _darkDatePickerText = Color(0xFFE0E0E0); // Date picker text color
+  static const Color _darkDatePickerButton = Color(0xFFFFB74D); // Date picker button color
+  static const Color _darkWhite87 = Colors.white70; // Standard white70 for dark theme
+  static const Color _darkWhite54 = Colors.white54; // Standard white54 for dark theme
+  static const Color _darkGrey600 = Color(0xFF9E9E9E); // Grey 600 for dark theme
+  static const Color _darkGrey700 = Color(0xFFBDBDBD); // Grey 700 for dark theme
+  static const Color _darkTransparent = Colors.transparent; // Transparent
+  static const Color _darkBlack = Colors.black; // Black for dark theme
+  static const Color _darkWhiteShadow = Colors.white; // White for shadows in dark theme
+
   // Light theme
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
@@ -225,8 +269,185 @@ class AppTheme {
     ),
   );
 
-  // Extension for custom colors
-  static CustomColors customColors = const CustomColors(
+  // Dark theme
+  static ThemeData darkTheme = ThemeData(
+    useMaterial3: true,
+    brightness: Brightness.dark,
+
+    // Color Scheme
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: _darkPrimary,
+      brightness: Brightness.dark,
+    ).copyWith(
+      surface: _darkSurface,
+      primary: _darkPrimary,
+      secondary: _darkSecondary,
+      tertiary: _darkTertiary,
+      error: _darkError,
+      onSurface: const Color(0xFFE0E0E0),
+      surfaceContainerHighest: _darkSearchBar,
+      // Custom property for success color
+      surfaceTint: _darkSuccess,
+    ),
+
+    // Scaffold background
+    scaffoldBackgroundColor: _darkSurface,
+
+    // AppBar Theme
+    appBarTheme: const AppBarTheme(
+      backgroundColor: _darkSurface,
+      elevation: 0,
+      centerTitle: false,
+      iconTheme: IconThemeData(
+        color: Color(0xFFE0E0E0),
+        size: 24,
+      ),
+      titleTextStyle: TextStyle(
+        color: Color(0xFFE0E0E0),
+        fontSize: 20,
+        fontWeight: FontWeight.w500,
+      ),
+    ),
+
+    // Card Theme
+    cardTheme: CardThemeData(
+      color: _darkCardBackground,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+      ),
+      surfaceTintColor: Colors.transparent,
+    ),
+
+    // Floating Action Button Theme
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: _darkSecondary,
+      foregroundColor: const Color(0xFF1A1A1A),
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      extendedTextStyle: const TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+
+    // Input Decoration Theme
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: _darkSearchBar,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(28),
+        borderSide: BorderSide.none,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(28),
+        borderSide: BorderSide.none,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(28),
+        borderSide: const BorderSide(
+          color: _darkPrimary,
+          width: 1.5,
+        ),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      hintStyle: const TextStyle(
+        color: Color(0xFF808080),
+        fontSize: 15,
+      ),
+      prefixIconColor: const Color(0xFF909090),
+    ),
+
+    // Tab Bar Theme
+    tabBarTheme: const TabBarThemeData(
+      indicatorSize: TabBarIndicatorSize.tab,
+      indicatorColor: _darkPrimary,
+      labelColor: Color(0xFFE0E0E0),
+      unselectedLabelColor: Color(0xFF909090),
+      labelStyle: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+      ),
+      unselectedLabelStyle: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+      ),
+    ),
+
+    // Navigation Bar Theme (Bottom Navigation)
+    navigationBarTheme: NavigationBarThemeData(
+      backgroundColor: _darkNavBarBackground,
+      indicatorColor: _darkSecondary.withOpacity(0.2),
+      labelTextStyle: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: _darkPrimary,
+          );
+        }
+        return const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+          color: Color(0xFF909090),
+        );
+      }),
+      iconTheme: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return const IconThemeData(
+            color: _darkPrimary,
+            size: 24,
+          );
+        }
+        return const IconThemeData(
+          color: Color(0xFF909090),
+          size: 24,
+        );
+      }),
+    ),
+
+    // Text Theme
+    textTheme: const TextTheme(
+      headlineLarge: TextStyle(
+        fontSize: 28,
+        fontWeight: FontWeight.w600,
+        color: Color(0xFFE0E0E0),
+      ),
+      headlineMedium: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+        color: Color(0xFFE0E0E0),
+      ),
+      titleLarge: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: Color(0xFFE0E0E0),
+      ),
+      titleMedium: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        color: Color(0xFFE0E0E0),
+      ),
+      bodyLarge: TextStyle(
+        fontSize: 15,
+        color: Color(0xFFE0E0E0),
+      ),
+      bodyMedium: TextStyle(
+        fontSize: 14,
+        color: Color(0xFFE0E0E0),
+      ),
+      labelLarge: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        color: Color(0xFFE0E0E0),
+      ),
+    ),
+  );
+
+  // Light theme custom colors
+  static CustomColors lightCustomColors = const CustomColors(
     success: _lightSuccess,
     cardBadge: _lightCardBadge,
     badgeText: _lightBadgeText,
@@ -265,6 +486,50 @@ class AppTheme {
     white: _lightWhite,
     blackShadow: _lightBlackShadow,
   );
+
+  // Dark theme custom colors
+  static CustomColors darkCustomColors = const CustomColors(
+    success: _darkSuccess,
+    cardBadge: _darkCardBadge,
+    badgeText: _darkBadgeText,
+    inputBorder: _darkInputBorder,
+    inputBorderFocused: _darkInputBorderFocused,
+    searchBarBackground: _darkSearchBar,
+    statusBadgeBackground: Color(0xFF3E2723),
+    statusBadgeText: Color(0xFFFFB74D),
+    cardBackground: _darkCardBackground,
+    orderBadge: _darkOrderBadge,
+    textPrimary: _darkTextPrimary,
+    textSecondary: _darkTextSecondary,
+    textTertiary: _darkTextTertiary,
+    textLabel: _darkTextLabel,
+    textHint: _darkTextHint,
+    searchBarFill: _darkSearchBarFill,
+    searchHint: _darkSearchHint,
+    searchFill: _darkSearchFill,
+    divider: _darkDivider,
+    tabSelected: _darkTabSelected,
+    tabUnselected: _darkTabUnselected,
+    tabIndicator: _darkTabIndicator,
+    fabBackground: _darkFabBackground,
+    navBarBackground: _darkNavBarBackground,
+    navBarIndicator: _darkNavBarIndicator,
+    navBarSelected: _darkNavBarSelected,
+    datePickerPrimary: _darkDatePickerPrimary,
+    datePickerSurface: _darkDatePickerSurface,
+    datePickerText: _darkDatePickerText,
+    datePickerButton: _darkDatePickerButton,
+    black87: _darkWhite87,
+    black54: _darkWhite54,
+    grey600: _darkGrey600,
+    grey700: _darkGrey700,
+    transparent: _darkTransparent,
+    white: _darkBlack,
+    blackShadow: _darkWhiteShadow,
+  );
+
+  // Extension for custom colors (backwards compatibility)
+  static CustomColors customColors = lightCustomColors;
 
   // Helper method to get custom input decoration for forms
   static InputDecoration getFormInputDecoration({
@@ -406,5 +671,10 @@ class CustomColors {
 
 // Extension to easily access custom colors
 extension CustomColorsExtension on BuildContext {
-  CustomColors get customColors => AppTheme.customColors;
+  CustomColors get customColors {
+    final brightness = Theme.of(this).brightness;
+    return brightness == Brightness.dark
+        ? AppTheme.darkCustomColors
+        : AppTheme.lightCustomColors;
+  }
 }
